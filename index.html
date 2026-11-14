@@ -42,6 +42,25 @@
     code.textContent = target;
     note.appendChild(document.createElement("br"));
     note.appendChild(code);
+    var left = false;
+    function leave() {
+      if (left) return;
+      left = true;
+      if (history.length > 1) {
+        history.back();
+        return;
+      }
+      window.close();
+      setTimeout(function () {
+        title.textContent = "Opened in Claude";
+        note.textContent = "You can close this tab.";
+        button.hidden = true;
+      }, 300);
+    }
+    window.addEventListener("blur", leave);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) leave();
+    });
     location.href = target;
   })();
 </script>
